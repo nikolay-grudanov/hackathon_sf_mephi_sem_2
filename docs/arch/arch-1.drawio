@@ -1,0 +1,396 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Страница — 1" id="uGn2rO1znAaB8phM_EVw">
+    <mxGraphModel dx="1228" dy="1134" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-1" target="cCZrN2tTIgwsem4fe3Pn-58">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1795" y="1028" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-1" value="SBERT для запроса" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="1420" width="330" height="918" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-2" value="1 Подготовка текста  после Natasha" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry x="43" y="46" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-3" value="2 BERT токенизация  (WordPiece, [CLS], [SEP])" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry x="43" y="199" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-4" value="3 Прохождение нейросети  (трансформерные блоки)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry x="43" y="352" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-5" value="4 Mean pooling  (объединение слоев)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry x="43" y="505" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-6" value="5 L2-нормализация  (стандартизация вектора)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry x="43" y="658" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-7" value="6 Подготовка к поиску  (оптимизация для FAISS)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry x="43" y="811" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-8" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-1" source="cCZrN2tTIgwsem4fe3Pn-2" target="cCZrN2tTIgwsem4fe3Pn-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-9" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-1" source="cCZrN2tTIgwsem4fe3Pn-3" target="cCZrN2tTIgwsem4fe3Pn-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-10" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-1" source="cCZrN2tTIgwsem4fe3Pn-4" target="cCZrN2tTIgwsem4fe3Pn-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-11" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-1" source="cCZrN2tTIgwsem4fe3Pn-5" target="cCZrN2tTIgwsem4fe3Pn-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-12" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-1" source="cCZrN2tTIgwsem4fe3Pn-6" target="cCZrN2tTIgwsem4fe3Pn-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-13" value="Обработка запроса через Natasha" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="796" y="1700" width="330" height="1047" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-14" value="1 Предобработка  (нижний регистр, пунктуация)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="46" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-15" value="2 Сегментация  (разделение на предложения)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="199" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-16" value="3 Токенизация  (разделение на слова)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="352" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-17" value="4 Морфоанализ  (части речи, граммемы)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="505" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="7" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="cCZrN2tTIgwsem4fe3Pn-18" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-18" value="5 Лемматизация  (нормальная форма)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="658" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-19" value="7 NER  (извлечение именованных сущностей)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="870" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-20" value="8 Нормализация сущностей" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="48.5" y="980" width="249" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-21" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="cCZrN2tTIgwsem4fe3Pn-14" target="cCZrN2tTIgwsem4fe3Pn-15">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-22" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="cCZrN2tTIgwsem4fe3Pn-15" target="cCZrN2tTIgwsem4fe3Pn-16">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-23" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="cCZrN2tTIgwsem4fe3Pn-16" target="cCZrN2tTIgwsem4fe3Pn-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-24" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="cCZrN2tTIgwsem4fe3Pn-17" target="cCZrN2tTIgwsem4fe3Pn-18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-26" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="cCZrN2tTIgwsem4fe3Pn-19" target="cCZrN2tTIgwsem4fe3Pn-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="cCZrN2tTIgwsem4fe3Pn-13" source="6" target="cCZrN2tTIgwsem4fe3Pn-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="6 Расширение запроса синонимами из НКРЯ" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry x="43" y="760" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-27" value="Поисковый интерфейс" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="406" y="1113" width="724" height="509" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-28" value="" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="940" y="3010" width="330" height="744" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-29" value="" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="2816" width="330" height="974" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-30" value="Обработка документов" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="1518" width="330" height="1248" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-31" value="Пользователь" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="218" y="1242" width="152" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-32" value="Streamlit UI" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="598" y="1380" width="140" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-33" value="Файл с документами (.txt)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="66" y="1543" width="237" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-34" value="Валидатор документов  (формат, размер ≤ 30 слов)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="2179" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-35" value="1 Предобработка  (нижний регистр, пунктуация)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="2841" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-36" value="2 Сегментация  (разделение на предложения)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="2969" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-37" value="3 Токенизация  (разделение на слова)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="3097" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-38" value="4 Морфоанализ  (части речи, граммемы)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="3225" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-39" value="5 Лемматизация  (нормальная форма)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="3353" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-40" value="6 NER  (извлечение именованных сущностей)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="3481" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-41" value="7 Нормализация сущностей" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="61" y="3609" width="249" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-42" value="Трекер позиций  в тексте" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="499" y="3190" width="226" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-43" value="1 Подготовка текста  после Natasha" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="981" y="3020" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-44" value="2 BERT токенизация  (WordPiece, [CLS], [SEP])" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="981" y="3148" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-45" value="3 Прохождение нейросети  (трансформерные блоки)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="981" y="3276" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-46" value="4 Mean pooling  (объединение слоев)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="981" y="3404" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-47" value="5 L2-нормализация  (стандартизация вектора)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="981" y="3532" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-48" value="6 Подготовка к индексации" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="988" y="3660" width="246" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-49" value="FAISS Index" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1039.5" y="3830" width="143" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="5" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-50" target="cCZrN2tTIgwsem4fe3Pn-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-50" value="Позиционный индекс" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1007.5" y="3970" width="207" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-51" value="Хранилище индексов" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="3970" width="206" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-52" value="Поисковый запрос" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="691" y="1543" width="186" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-53" value="Ранжирование" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="834" y="1138" width="159" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-54" value="Калькулятор  вероятности" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="796" y="1242" width="234" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-55" value="File Logger  (запросы, timestamp)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="482" y="2179" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-56" value="Results Logger  (найденные позиции)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1165" y="1368" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="3" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-57" target="cCZrN2tTIgwsem4fe3Pn-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-57" value="Расширение запроса  (синонимы)" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1158" y="2841" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-58" value="FAISS поиск" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="840" y="988" width="146" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-59" value="1 Загрузка документа" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.93;entryX=0.07;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-31" target="cCZrN2tTIgwsem4fe3Pn-32">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="501" y="1332" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-60" value="2 Поисковый запрос" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.74;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-31" target="cCZrN2tTIgwsem4fe3Pn-32">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="668" y="1332" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-61" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-33" target="cCZrN2tTIgwsem4fe3Pn-34">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-62" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-35" target="cCZrN2tTIgwsem4fe3Pn-36">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-63" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-36" target="cCZrN2tTIgwsem4fe3Pn-37">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-64" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-37" target="cCZrN2tTIgwsem4fe3Pn-38">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-65" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-38" target="cCZrN2tTIgwsem4fe3Pn-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-66" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-39" target="cCZrN2tTIgwsem4fe3Pn-40">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-67" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-40" target="cCZrN2tTIgwsem4fe3Pn-41">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-68" value="" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;rounded=0;edgeStyle=elbowEdgeStyle;elbow=vertical;entryX=0.48;entryY=0.984;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-41" target="cCZrN2tTIgwsem4fe3Pn-42">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="3740" />
+            </Array>
+            <mxPoint x="612" y="3240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-69" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-43" target="cCZrN2tTIgwsem4fe3Pn-44">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-70" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-44" target="cCZrN2tTIgwsem4fe3Pn-45">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-71" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-45" target="cCZrN2tTIgwsem4fe3Pn-46">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-72" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-46" target="cCZrN2tTIgwsem4fe3Pn-47">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-73" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-47" target="cCZrN2tTIgwsem4fe3Pn-48">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-74" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-48" target="cCZrN2tTIgwsem4fe3Pn-49">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-75" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-49" target="cCZrN2tTIgwsem4fe3Pn-50">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-77" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-53" target="cCZrN2tTIgwsem4fe3Pn-54">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-78" value="Загрузка" style="curved=1;dashed=1;dashPattern=2 3;startArrow=none;endArrow=block;exitX=0.02;exitY=1;entryX=1;entryY=0.12;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-32" target="cCZrN2tTIgwsem4fe3Pn-33">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="484" y="1482" />
+              <mxPoint x="484" y="1518" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-79" value="Запрос" style="curved=1;startArrow=none;endArrow=block;exitX=0.8;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-32" target="cCZrN2tTIgwsem4fe3Pn-52">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="785" y="1482" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-80" value="Логирование запроса" style="curved=1;startArrow=none;endArrow=block;exitX=0.02;exitY=1;entryX=0.5;entryY=-0.01;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-52" target="cCZrN2tTIgwsem4fe3Pn-55">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="612" y="1622" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-81" value="Загруженный индекс" style="startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0.75;entryY=0;rounded=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;curved=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-51" target="cCZrN2tTIgwsem4fe3Pn-58">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1506" y="3994" />
+              <mxPoint x="2136" y="3994" />
+              <mxPoint x="2136" y="961" />
+              <mxPoint x="950" y="961" />
+              <mxPoint x="950" y="988" />
+            </Array>
+            <mxPoint x="1552.0399999999995" y="3994" as="sourcePoint" />
+            <mxPoint x="969.9960000000001" y="978.3340000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-82" value="Найденные совпадения" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-58" target="cCZrN2tTIgwsem4fe3Pn-53">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-83" value="Результаты поиска" style="curved=1;startArrow=none;endArrow=block;exitX=0.34;exitY=1;entryX=0.9;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-54" target="cCZrN2tTIgwsem4fe3Pn-32">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="826" y="1332" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-84" value="Логирование результатов" style="curved=1;startArrow=none;endArrow=block;exitX=0.66;exitY=1;entryX=0;entryY=0.08;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-54" target="cCZrN2tTIgwsem4fe3Pn-56">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="1332" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-85" value="" style="curved=1;startArrow=none;endArrow=block;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-34" target="cCZrN2tTIgwsem4fe3Pn-29">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-86" value="" style="startArrow=none;endArrow=block;rounded=0;edgeStyle=elbowEdgeStyle;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-42" target="cCZrN2tTIgwsem4fe3Pn-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-87" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.98;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-52" target="cCZrN2tTIgwsem4fe3Pn-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="957" y="1622" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cCZrN2tTIgwsem4fe3Pn-88" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0;entryY=0.18;rounded=0;" edge="1" parent="1" source="cCZrN2tTIgwsem4fe3Pn-13" target="cCZrN2tTIgwsem4fe3Pn-57">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="957" y="2816" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

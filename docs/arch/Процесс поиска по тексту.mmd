@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant User
+    participant SS as SemanticSearchSystem
+    participant LA as NatashaLinguisticAnalyzer
+    participant TP as TextPreprocessor
+    participant SBERT as SentenceTransformer
+    participant FAISS as FAISSIndex
+    participant DB as SearchDatabase
+    
+    User->>SS: search(query)
+    SS->>LA: analyze_query(query)
+    LA->>TP: clear_text_with_mapping(query)
+    TP-->>LA: cleaned_query, mapping
+    LA-->>SS: query_analysis {tokens, original_text, cleaned_text, mapping}
+    SS->>SBERT: encode(cleaned_query)
+    SBERT-->>SS: query_embedding
+    SS->>FAISS: search(query_embedding, top_k)
+    FAISS-->>SS: search_results [{doc_id, score}, ...]
+    
+    loop for each result
+        SS->>DB: get_document_by_id(doc_id)
+        DB-->>SS: doc_data
+        SS->>SS: _check_lexical_matches(query_analysis, doc_data)
+    end
+    
+    SS-->>User: ranked_results [{doc_id, position, score}, ...]

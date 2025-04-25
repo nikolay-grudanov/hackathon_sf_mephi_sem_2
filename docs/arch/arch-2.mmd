@@ -1,0 +1,36 @@
+graph TD
+    subgraph "Фаза 1: Офлайн Индексация"
+        direction TB
+        A1["Исходные тексты (CSV)"] --> B1["Предобработка: lowercase, remove punctuation"];
+        B1 --> C1{Natasha: Токенизация, Лемматизация, POS-теги, Индексы символов};
+        C1 -- "Очищенный текст" --> D1["SBERT Bi-Encoder: ai-forever/sbert_large_mt_nlu_ru"];
+        D1 -- "Вектор документа (Embedding)" --> E1["FAISS: Построение индекса"];
+        C1 -- "Ориг. текст, Данные токенов (lemma, pos, start, end)" --> F1["Хранилище Метаданных (JSON/DB)"];
+        E1 --> G1((Индекс FAISS));
+        F1 --> H1((Хранилище Метаданных));
+    end
+
+    subgraph "Фаза 2: Онлайн Поиск"
+        direction TB
+        A2["Пользовательский Запрос (1-2 слова)"] --> B2["Предобработка и Нормализация: lowercase, punct, slang_dict"];
+        B2 -- "Нормализованный запрос" --> C2{"Расширение Запроса: Natasha (Леммы) + RuWordNet (Синонимы)"};
+        B2 -- "Нормализованный запрос" --> D2["SBERT Bi-Encoder: ai-forever/sbert_large_mt_nlu_ru"];
+        D2 -- "Вектор запроса" --> E2{"FAISS: Поиск Top-K кандидатов"};
+        G1 -- "Используется для поиска" --> E2;
+        E2 -- "ID кандидатов + score" --> F2{"Ранжирование и Валидация"};
+        C2 -- "Расширенные термины запроса" --> F2;
+        H1 -- "Используется для валидации" --> F2;
+        F2 -- "Проверка POS, лексики, расчет финального score" --> G2["Определение Позиции и Форматирование Вывода"];
+        G2 --> H2["Результат: Позиция (start-end), Вероятность"];
+    end
+
+    subgraph "Фаза 3: UI (Опционально)"
+        direction TB
+        I1[Streamlit UI] --> A2;
+        H2 --> I1;
+    end
+
+    %% Styling (Optional)
+    style G1 fill:#f9f,stroke:#333,stroke-width:2px;
+    style H1 fill:#ccf,stroke:#333,stroke-width:2px;
+

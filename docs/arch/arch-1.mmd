@@ -1,0 +1,178 @@
+%%{init: {'theme': 'neutral', 'themeVariables': { 'fontFamily': 'Fira Code'}}}%%
+flowchart TD
+    U[Пользователь] -->|1 Загрузка документа| G
+    U -->|2 Поисковый запрос| G
+    
+    subgraph s1["Обработка документов"]
+        A["Файл с документами (.txt)"] --> B0["Валидатор документов  (формат, размер ≤ 30 слов)"]
+    end
+    
+    B0 --> natasha_doc
+    
+    %% Детализация обработки документа через Natasha
+    subgraph natasha_doc["Обработка через Natasha"]
+        ND1["1 Предобработка  (нижний регистр, пунктуация)"]
+        ND2["2 Сегментация  (разделение на предложения)"]
+        ND3["3 Токенизация  (разделение на слова)"]
+        ND4["4 Морфоанализ  (части речи, граммемы)"]
+        ND5["5 Лемматизация  (нормальная форма)"]
+        ND6["6 NER  (извлечение именованных сущностей)"]
+        ND7["7 Нормализация сущностей"]
+        
+        ND1 --> ND2
+        ND2 --> ND3
+        ND3 --> ND4
+        ND4 --> ND5
+        ND5 --> ND6
+        ND6 --> ND7
+    end
+    
+    ND7 --> C1
+    
+    C1["Трекер позиций  в тексте"] --> sbert_doc
+    
+    %% Детализация SBERT для документа
+    subgraph sbert_doc["SBERT для документа"]
+        SD1["1 Подготовка текста  после Natasha"]
+        SD2["2 BERT токенизация  (WordPiece, [CLS], [SEP])"]
+        SD3["3 Прохождение нейросети  (трансформерные блоки)"]
+        SD4["4 Mean pooling  (объединение слоев)"]
+        SD5["5 L2-нормализация  (стандартизация вектора)"]
+        SD6["6 Подготовка к индексации"]
+        
+        SD1 --> SD2
+        SD2 --> SD3
+        SD3 --> SD4
+        SD4 --> SD5
+        SD5 --> SD6
+    end
+    
+    SD6 --> F
+    
+    F["FAISS Index"] --> F1["Позиционный индекс"]
+    F1 -->|Индекс готов| F2[Хранилище индексов]
+    
+    subgraph subGraph2["Поисковый интерфейс"]
+        G["Streamlit UI"]
+        H["Поисковый запрос"]
+        I["Ранжирование"] --> I1["Калькулятор  вероятности"]
+    end
+    
+    %% Логирование
+    L1["File Logger  (запросы, timestamp)"]
+    L2["Results Logger  (найденные позиции)"]
+    
+    %% Поток загрузки документа (синий)
+    G -.->|Загрузка| A
+    
+    %% Поток поискового запроса (зеленый)
+    G -->|Запрос| H
+    H -->|Логирование запроса| L1
+    
+    H --> natasha_query
+    
+    %% Детализация обработки запроса через Natasha
+    subgraph natasha_query["Обработка запроса через Natasha"]
+        HN1["1 Предобработка  (нижний регистр, пунктуация)"]
+        HN2["2 Сегментация  (разделение на предложения)"]
+        HN3["3 Токенизация  (разделение на слова)"]
+        HN4["4 Морфоанализ  (части речи, граммемы)"]
+        HN5["5 Лемматизация  (нормальная форма)"]
+        HN6["6 NER  (извлечение именованных сущностей)"]
+        HN7["7 Нормализация сущностей"]
+        
+        HN1 --> HN2
+        HN2 --> HN3
+        HN3 --> HN4
+        HN4 --> HN5
+        HN5 --> HN6
+        HN6 --> HN7
+    end
+    
+    natasha_query --> H2
+    H2["Расширение запроса  (синонимы)"] --> sbert_query
+    
+    %% Детализация SBERT для запроса
+    subgraph sbert_query["SBERT для запроса"]
+        SQ1["1 Подготовка текста  после Natasha"]
+        SQ2["2 BERT токенизация  (WordPiece, [CLS], [SEP])"]
+        SQ3["3 Прохождение нейросети  (трансформерные блоки)"]
+        SQ4["4 Mean pooling  (объединение слоев)"]
+        SQ5["5 L2-нормализация  (стандартизация вектора)"]
+        SQ6["6 Подготовка к поиску  (оптимизация для FAISS)"]
+        
+        SQ1 --> SQ2
+        SQ2 --> SQ3
+        SQ3 --> SQ4
+        SQ4 --> SQ5
+        SQ5 --> SQ6
+    end
+    
+    sbert_query --> FQ
+    
+    FQ[FAISS поиск]
+    F2 -->|Загруженный индекс| FQ
+    FQ -->|Найденные совпадения| I
+    I1 -->|Результаты поиска| G
+    I1 -->|Логирование результатов| L2
+    
+    %% Стили
+    style U fill:#8f8,stroke:#333,color:#333
+    style A fill:#f9f,stroke:#333
+    style G fill:#7af,stroke:#333
+    style F fill:#ffa,stroke:#333
+    style F2 fill:#ffa,stroke:#333
+    style H fill:#cff,stroke:#333
+    style L1 fill:#ddd,stroke:#999
+    style L2 fill:#ddd,stroke:#999
+    
+    %% Стилизация блоков Natasha
+    style natasha_doc fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style natasha_query fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND1 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND2 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND3 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND4 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND5 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND6 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style ND7 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN1 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN2 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN3 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN4 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN5 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN6 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    style HN7 fill:#ffe6cc,stroke:#d79b00,stroke-width:1
+    
+    %% Стилизация блоков SBERT
+    style sbert_doc fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style sbert_query fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SD1 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SD2 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SD3 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SD4 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SD5 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SD6 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SQ1 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SQ2 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SQ3 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SQ4 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SQ5 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    style SQ6 fill:#e8f5e9,stroke:#82b366,stroke-width:1
+    
+    %% Стили для потоков
+    %% Поток загрузки документа (синий)
+    linkStyle 0 stroke:#777,stroke-dasharray:5 5
+    linkStyle 1 stroke:#333
+    linkStyle 2 stroke:#0077cc,stroke-width:2
+    
+    %% Поток поискового запроса (зеленый) и логирования (серый)
+    linkStyle 3 stroke:#00aa44,stroke-width:2
+    linkStyle 4 stroke:#999999,stroke-width:1.5,stroke-dasharray:3 3
+    linkStyle 5 stroke:#00aa44,stroke-width:2
+    linkStyle 6 stroke:#00aa44,stroke-width:2
+    linkStyle 7 stroke:#00aa44,stroke-width:2
+    linkStyle 8 stroke:#00aa44,stroke-width:2
+    linkStyle 9 stroke:#00aa44,stroke-width:2
+    linkStyle 10 stroke:#00aa44,stroke-width:2
+    linkStyle 11 stroke:#999999,stroke-width:1.5,stroke-dasharray:3 3

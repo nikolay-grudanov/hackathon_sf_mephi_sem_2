@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant SS as SemanticSearchSystem
+    participant LA as NatashaLinguisticAnalyzer
+    participant TP as TextPreprocessor
+    participant SBERT as SentenceTransformer
+    participant DB as SearchDatabase
+    participant FAISS as FAISSIndex
+    
+    User->>SS: index_document(text)
+    SS->>LA: analyze(text)
+    LA->>TP: clear_text_with_mapping(text)
+    TP-->>LA: cleaned_text, mapping
+    LA-->>SS: analysis_result {tokens, original_text, cleaned_text, mapping}
+    SS->>SBERT: encode(cleaned_text)
+    SBERT-->>SS: embedding
+    SS->>DB: add_document(original_text, cleaned_text, tokens_data, mapping, embedding)
+    DB-->>SS: doc_id
+    SS->>FAISS: add_embedding(embedding, doc_id)
+    SS-->>User: doc_id

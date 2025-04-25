@@ -1,0 +1,68 @@
+classDiagram
+    class TextPreprocessor {
+        +preprocess(text: str) -> str
+        +clear_text_with_mapping(text: str) -> Tuple[str, List[int]]
+    }
+    
+    class NatashaLinguisticAnalyzer {
+        -text_preprocessor: TextPreprocessor
+        +analyze(text: str) -> Dict
+        +analyze_query(text: str) -> Dict
+    }
+    
+    class Document {
+        +id: int
+        +original_text: str
+        +cleaned_text: str
+        +tokens_data: str
+        +mapping: str
+        +embedding: bytes
+    }
+    
+    class Token {
+        +id: int
+        +document_id: int
+        +token: str
+        +lemma: str
+        +pos: str
+        +start_clean: int
+        +end_clean: int
+        +start_orig: int
+        +end_orig: int
+    }
+    
+    class SearchDatabase {
+        +add_document(original_text, cleaned_text, tokens_data, mapping, embedding) -> int
+        +get_document_by_id(doc_id) -> Dict
+        +get_all_documents(limit) -> List[Dict]
+        +get_all_embeddings() -> Dict[int, np.ndarray]
+        +update_document(doc_id, **kwargs) -> bool
+        +delete_document(doc_id) -> bool
+    }
+    
+    class FAISSIndex {
+        +build_index(db) -> int
+        +add_embedding(embedding, document_id) -> None
+        +search(query_embedding, top_k) -> List[Dict]
+        +save(file_path, ids_path) -> None
+        +load(file_path, ids_path) -> None
+    }
+    
+    class SemanticSearchSystem {
+        -analyzer: NatashaLinguisticAnalyzer
+        -sbert_model: SentenceTransformer
+        -db: SearchDatabase
+        -faiss_index: FAISSIndex
+        +index_document(text) -> int
+        +get_document_embedding(analysis_result) -> np.ndarray
+        +build_index() -> int
+        +search(query, top_k) -> List[Dict]
+        -_check_lexical_matches(query_analysis, doc_data) -> Tuple[float, str]
+    }
+    
+    NatashaLinguisticAnalyzer --> TextPreprocessor : uses
+    SearchDatabase --> Document : manages
+    SearchDatabase --> Token : manages
+    SemanticSearchSystem --> NatashaLinguisticAnalyzer : uses
+    SemanticSearchSystem --> SearchDatabase : uses
+    SemanticSearchSystem --> FAISSIndex : uses
