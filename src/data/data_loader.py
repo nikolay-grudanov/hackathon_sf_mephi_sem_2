@@ -11,6 +11,8 @@ from src.utils.sbert_large_nlu import SbertLargeNLU
 from src.database.faiss_database import FaissDatabase
 from src.database.search_database_sql import SearchDatabase, Document, Token
 
+logger = logging.getLogger(__name__)
+
 class DataLoader:
     def __init__(self, raw_data_path: str = "data/raw"):
         self.natasha = NatashaLinguisticAnalyzer()
@@ -19,11 +21,11 @@ class DataLoader:
         self.sql_db = SearchDatabase()
         self.raw_data_path = Path(raw_data_path)
         self.seen_texts = set()
-        self.logger = logging.getLogger(__name__)
 
     def _load_raw_data(self) -> pd.DataFrame:
         """Загрузка данных из CSV-файлов"""
         files = list(self.raw_data_path.glob("*.csv"))
+        logger.info(f"Loading data from {len(files)} CSV files...")
         if not files:
             raise FileNotFoundError(f"No CSV files found in {self.raw_data_path}")
             
@@ -77,7 +79,7 @@ class DataLoader:
             results['doc_ids'].extend(doc_ids)
 
         except Exception as e:
-            self.logger.error(f"Batch processing error: {str(e)}")
+            logger.error(f"Batch processing error: {str(e)}")
             results['errors'] += len(batch)
             results['error_messages'].append(str(e))
 
@@ -132,6 +134,8 @@ class DataLoader:
                     } for token in tokens]
                 }
 
+                logger.info(f"Обработан текст: {doc_data}")
+
                 current_batch.append(doc_data)
 
                 # Пакетная обработка
@@ -142,6 +146,7 @@ class DataLoader:
             except Exception as e:
                 results['errors'] += 1
                 results['error_messages'].append(str(e))
+                logger.error(f"Обработка текста завершилась ошибкой: {str(e)}")
 
         # Обработка последнего пакета
         if current_batch:
@@ -151,7 +156,9 @@ class DataLoader:
 
     def process_all_data(self) -> None:
         """Полный цикл обработки данных"""
+        logger.debug("Загрузка и предобработка данных...")
         df = self._load_raw_data()
+        logger.debug("Данные загружены и предобработаны.")
         df["processed_text"] = df.apply(self._preprocess_text, axis=1)
         
         valid_texts = df[
@@ -161,7 +168,7 @@ class DataLoader:
         results = self.process_and_index(valid_texts)
         
         self.faiss_db.save_index()
-        self.logger.info(
+        logger.info(
             f"Обработка завершена. Успешно: {results['success']}, "
             f"Ошибки: {results['errors']}, Дубликаты: {results['duplicates']}"
         )

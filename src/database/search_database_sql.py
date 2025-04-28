@@ -13,7 +13,7 @@ class SearchDatabase:
     def __init__(self, db_path: str = None):
         self._init_db_path(db_path)
         self.engine = create_engine(f'sqlite:///{self.db_path}', echo=False)
-        logger.debug(f"База данных успешно создана: {self.db_path}")
+        logger.info(f"База данных успешно создана: {self.db_path}")
         self.Session = scoped_session(sessionmaker(bind=self.engine))
         self._create_tables()
 
@@ -68,9 +68,11 @@ class SearchDatabase:
                 session.add(token)
             
             session.commit()
+            logger.debug(f"Документ успешно добавлен в базу данных: {doc.id}")
             return doc.id
         except exc.SQLAlchemyError as e:
             session.rollback()
+            logger.error(f"Ошибка добавления документа: {str(e)}")
             raise RuntimeError(f"Database error: {str(e)}")
         finally:
             session.close()
@@ -82,7 +84,7 @@ class SearchDatabase:
             doc = session.query(Document).get(doc_id)
             if not doc:
                 return None
-            
+            logger.debug(f"Документ успешно получен из базы данных: {doc_id}")
             return {
                 'id': doc.id,
                 'original_text': doc.original_text,
@@ -102,7 +104,9 @@ class SearchDatabase:
                     } for t in doc.tokens
                 ]
             }
+            
         except exc.SQLAlchemyError as e:
+            logger.error(f"Ошибка получения документа: {str(e)}")
             raise RuntimeError(f"Database error: {str(e)}")
         finally:
             session.close()
