@@ -1,9 +1,6 @@
 from sqlalchemy import Column, Integer, Text, LargeBinary, Index
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-
-# Создаем базовый класс для моделей SQLAlchemy
-Base = declarative_base()
+from src.database.models import Base 
 
 class Document(Base):
     """Модель документа с текстовыми данными и эмбеддингами."""

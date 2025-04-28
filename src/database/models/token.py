@@ -2,9 +2,7 @@
 from sqlalchemy import Column, Integer, String, Index, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-
-# Создаем базовый класс для моделей SQLAlchemy
-Base = declarative_base()
+from src.database.models import Base 
 
 class Token(Base):
     """Модель токена с информацией о лемме, POS-теге и позиции."""
