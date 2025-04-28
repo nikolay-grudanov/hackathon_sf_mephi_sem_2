@@ -94,3 +94,6 @@ src/models/sbert/sberbank-ai__sbert_large_nlu_ru/**
 src/data/db/faiss_index/faiss_index.bin
 .gitignore
 src/data/db/faiss_index/faiss_index.pkl
+src/data/db/faiss_index/faiss_FlatIP.index
+.gitignore
+src/data/db/faiss_index/faiss_FlatIP.pkl

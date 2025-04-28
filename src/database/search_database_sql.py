@@ -6,8 +6,7 @@ from sqlalchemy import create_engine, exc, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 # Импорт базового класса и моделей
-from src.database.models import Base, document, token
-
+from src.database.models import Base, Document, Token 
 class SearchDatabase:
     def __init__(self, db_path: str = None):
         self._init_db_path(db_path)
@@ -48,7 +47,7 @@ class SearchDatabase:
         """
         session = self.Session()
         try:
-            doc = document(
+            doc = Document(
                 original_text=doc_data['original_text'],
                 cleaned_text=doc_data['cleaned_text'],
                 tokens_data=json.dumps(doc_data['tokens_data']),
@@ -59,7 +58,7 @@ class SearchDatabase:
             session.flush()
 
             for token_data in doc_data.get('tokens', []):
-                token = token(
+                token = Token(
                     document_id=doc.id,
                     **token_data
                 )
@@ -77,7 +76,7 @@ class SearchDatabase:
         """Получение документа по ID"""
         session = self.Session()
         try:
-            doc = session.query(document).get(doc_id)
+            doc = session.query(Document).get(doc_id)
             if not doc:
                 return None
             
