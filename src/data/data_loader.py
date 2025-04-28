@@ -3,7 +3,6 @@ from typing import List, Dict, Any
 import pandas as pd
 from tqdm import tqdm
 import json
-from sqlalchemy.orm import Session
 import logging
 
 from src.utils.natasha_linguistic_analyzer import NatashaLinguisticAnalyzer
@@ -28,53 +27,49 @@ class DataLoader:
         logger.info(f"Loading data from {len(files)} CSV files...")
         if not files:
             raise FileNotFoundError(f"No CSV files found in {self.raw_data_path}")
-            
         return pd.concat(
-            [pd.read_csv(f, usecols=["doc_text", "image2text", "speech2text"]) 
-             for f in files],
+            [pd.read_csv(f, usecols=["doc_text"]) for f in files],
             ignore_index=True
         )
 
     def _preprocess_text(self, row: pd.Series) -> str:
-        """Объединение и очистка текстовых полей"""
-        combined = []
-        for field in ["doc_text", "image2text", "speech2text"]:
-            text = str(row[field]).strip()
-            if text and text.lower() != "nan":
-                cleaned = self.natasha.text_preprocessor.clear_text(text)
-                combined.append(cleaned)
-        return " ".join(combined)[:500]  # Ограничение длины
+        """Очистка только doc_text"""
+        text = str(row["doc_text"]).strip()
+        if text and text.lower() != "nan":
+            cleaned = self.natasha.text_preprocessor.clear_text(text)
+            return cleaned[:500]  # Ограничение длины
+        return ""
 
     def _process_batch(self, batch: List[Dict], results: Dict) -> None:
         try:
             texts = [doc['cleaned_text'] for doc in batch]
             embeddings = self.sbert.create_embeddings(texts)
-            
+
+            doc_ids = []
             with self.sql_db.Session() as session:
                 docs = []
-                for doc_data in batch:
+                for i, doc_data in enumerate(batch):
                     doc = Document(
                         original_text=doc_data['original_text'],
                         cleaned_text=doc_data['cleaned_text'],
                         tokens_data=json.dumps(doc_data['tokens_data']),
                         mapping=json.dumps(doc_data['mapping']),
-                        embedding=embeddings[len(docs)].tobytes()
+                        embedding=embeddings[i].tobytes()
                     )
                     session.add(doc)
+                    session.flush()  # Получаем doc.id сразу после добавления
+                    doc_ids.append(doc.id)
                     docs.append(doc)
-                session.commit()
-                
-                for doc, doc_data in zip(docs, batch):
+                    # Добавляем токены для документа
                     for token_data in doc_data['tokens']:
                         token_obj = Token(document_id=doc.id, **token_data)
                         session.add(token_obj)
                 session.commit()
 
-            doc_ids = [doc.id for doc in docs]
-            # ВАЖНО: добавляем эмбеддинги по одному!
+            # Добавляем эмбеддинги в FAISS (уже вне сессии)
             for emb, doc_id in zip(embeddings, doc_ids):
                 self.faiss_db.add_embedding(emb, doc_id)
-            
+
             results['success'] += len(batch)
             results['doc_ids'].extend(doc_ids)
 
@@ -83,8 +78,7 @@ class DataLoader:
             results['errors'] += len(batch)
             results['error_messages'].append(str(e))
 
-
-    def process_and_index(self, texts: List[str], batch_size: int = 32) -> Dict[str, Any]:
+    def process_and_index(self, rows: List[dict], batch_size: int = 32) -> Dict[str, Any]:
         """Основной метод пакетной обработки"""
         results = {
             'success': 0,
@@ -95,31 +89,31 @@ class DataLoader:
         }
 
         current_batch = []
-        
-        for text in tqdm(texts, desc="Обработка документов"):
+
+        for row in tqdm(rows, desc="Обработка документов"):
             try:
-                if not text or len(text.strip()) == 0:
+                original_text = str(row.get("doc_text", "")).strip()
+                if not original_text:
                     continue
 
-                # Проверка дубликатов
-                text_hash = hash(text.strip().lower())
+                # Лингвистический анализ по ОРИГИНАЛУ!
+                analyzed = self.natasha.analyze(original_text)
+                cleaned_text = analyzed['cleaned_text']
+
+                # Проверка дубликатов по очищенному тексту
+                text_hash = hash(cleaned_text.strip().lower())
                 if text_hash in self.seen_texts:
                     results['duplicates'] += 1
                     continue
                 self.seen_texts.add(text_hash)
 
-                # Лингвистический анализ
-                analyzed = self.natasha.analyze(text)
-                
-                # Валидация длины
                 tokens = analyzed['tokens']
                 if len(tokens) > 30:
                     tokens = tokens[:30]
                     analyzed['cleaned_text'] = ' '.join([t[0] for t in tokens])
 
-                # Подготовка данных
                 doc_data = {
-                    'original_text': text['original_text'],
+                    'original_text': analyzed['original_text'],
                     'cleaned_text': analyzed['cleaned_text'],
                     'tokens_data': [token[:4] for token in tokens],
                     'mapping': analyzed['mapping'],
@@ -133,8 +127,6 @@ class DataLoader:
                         'end_orig': token[6]
                     } for token in tokens]
                 }
-
-                logger.info(f"Обработан текст: {doc_data}")
 
                 current_batch.append(doc_data)
 
@@ -160,38 +152,38 @@ class DataLoader:
         df = self._load_raw_data()
         logger.debug("Данные загружены и предобработаны.")
         df["processed_text"] = df.apply(self._preprocess_text, axis=1)
-        
-        valid_texts = df[
+
+        # Передаем только doc_text и processed_text
+        valid_rows = df[
             df["processed_text"].str.split().str.len().between(1, 30)
-        ]["processed_text"].tolist()
-        
-        results = self.process_and_index(valid_texts)
-        
+        ][["doc_text", "processed_text"]].to_dict(orient="records")
+
+        results = self.process_and_index(valid_rows)
+
         self.faiss_db.save_index()
         logger.info(
             f"Обработка завершена. Успешно: {results['success']}, "
             f"Ошибки: {results['errors']}, Дубликаты: {results['duplicates']}"
         )
 
-
     def search(self, query: str, top_k: int = 5) -> List[Dict]:
         """Метод поиска"""
         query_analysis = self.natasha.analyze_query(query)
         query_embedding = self.sbert.create_embeddings(query_analysis['cleaned_text'])
-        
+
         faiss_results = self.faiss_db.search(query_embedding, top_k)
-        
+
         results = []
         for res in faiss_results:
             doc_data = self.sql_db.get_document(res['doc_id'])
             start_orig = doc_data['mapping'][res['start_clean']]
             end_orig = doc_data['mapping'][res['end_clean']]
-            
+
             results.append({
                 'doc_id': res['doc_id'],
                 'score': res['score'],
                 'text': doc_data['original_text'][start_orig:end_orig],
                 'position': (start_orig, end_orig)
             })
-        
+
         return sorted(results, key=lambda x: x['score'], reverse=True)
