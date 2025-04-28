@@ -11,6 +11,10 @@ from natasha import (
 
 from .text_preprocessor import TextPreprocessor
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class NatashaLinguisticAnalyzer:
     """
     Класс для лингвистического анализа русского текста с использованием Natasha.
@@ -39,6 +43,7 @@ class NatashaLinguisticAnalyzer:
 
         # Инициализация экземпляра TextPreprocessor (композиция)
         self.text_preprocessor = TextPreprocessor()
+        logger.debug('Наташа инициализирована.')
     
     def clear_text_with_mapping(self, text: str) -> Tuple[str, List[int]]:
         """
@@ -46,6 +51,8 @@ class NatashaLinguisticAnalyzer:
         """
         # Получаем очищенный текст с помощью TextPreprocessor
         cleaned_text = self.text_preprocessor.clear_text(text)
+        logger.debug(f'Оригинальный текст: {text}')
+        logger.debug(f'Очищенный текст: {cleaned_text}')
         
         # Создаем маппинг индексов из очищенного текста в исходный
         mapping = []
@@ -150,7 +157,8 @@ class NatashaLinguisticAnalyzer:
                 start_orig,          # Начальный индекс в исходном тексте
                 end_orig             # Конечный индекс в исходном тексте
             ))
-        
+        logger.debug(f'Токены после анализа: {tokens}')
+
         return {
             'tokens': tokens,
             'original_text': original_text,

@@ -44,16 +44,14 @@ class DataLoader:
         return " ".join(combined)[:500]  # Ограничение длины
 
     def _process_batch(self, batch: List[Dict], results: Dict) -> None:
-        """Обработка пакета документов"""
         try:
             texts = [doc['cleaned_text'] for doc in batch]
             embeddings = self.sbert.create_embeddings(texts)
             
             with self.sql_db.Session() as session:
-                # Добавление документов
                 docs = []
                 for doc_data in batch:
-                    doc = document(
+                    doc = Document(
                         original_text=doc_data['original_text'],
                         cleaned_text=doc_data['cleaned_text'],
                         tokens_data=json.dumps(doc_data['tokens_data']),
@@ -62,20 +60,18 @@ class DataLoader:
                     )
                     session.add(doc)
                     docs.append(doc)
-                
                 session.commit()
                 
-                # Добавление токенов
                 for doc, doc_data in zip(docs, batch):
                     for token_data in doc_data['tokens']:
-                        token_obj = token(document_id=doc.id, **token_data)
+                        token_obj = Token(document_id=doc.id, **token_data)
                         session.add(token_obj)
-                
                 session.commit()
 
-            # Индексация в FAISS
             doc_ids = [doc.id for doc in docs]
-            self.faiss_db.save_embeddings(embeddings, doc_ids)
+            # ВАЖНО: добавляем эмбеддинги по одному!
+            for emb, doc_id in zip(embeddings, doc_ids):
+                self.faiss_db.add_embedding(emb, doc_id)
             
             results['success'] += len(batch)
             results['doc_ids'].extend(doc_ids)
@@ -84,6 +80,7 @@ class DataLoader:
             self.logger.error(f"Batch processing error: {str(e)}")
             results['errors'] += len(batch)
             results['error_messages'].append(str(e))
+
 
     def process_and_index(self, texts: List[str], batch_size: int = 32) -> Dict[str, Any]:
         """Основной метод пакетной обработки"""
@@ -120,7 +117,7 @@ class DataLoader:
 
                 # Подготовка данных
                 doc_data = {
-                    'original_text': analyzed['original_text'],
+                    'original_text': text['original_text'],
                     'cleaned_text': analyzed['cleaned_text'],
                     'tokens_data': [token[:4] for token in tokens],
                     'mapping': analyzed['mapping'],
@@ -163,12 +160,12 @@ class DataLoader:
         
         results = self.process_and_index(valid_texts)
         
-        # Финализация
         self.faiss_db.save_index()
         self.logger.info(
             f"Обработка завершена. Успешно: {results['success']}, "
             f"Ошибки: {results['errors']}, Дубликаты: {results['duplicates']}"
         )
+
 
     def search(self, query: str, top_k: int = 5) -> List[Dict]:
         """Метод поиска"""

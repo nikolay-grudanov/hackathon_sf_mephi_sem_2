@@ -44,6 +44,7 @@ class FaissDatabase:
         self.index_to_id: Dict[int, int] = {}
         
         self._load_index(overwrite)
+        logger.debug(f"Initialized {self.index_type} index with dimension {self.index_dimension}")
 
     def _init_paths(self, index_path: Optional[str]) -> None:
         """Инициализация путей к данным"""
@@ -215,6 +216,10 @@ class FaissDatabase:
         logger.debug(f"Removed doc {doc_id}")
         return True
 
+    def save_index(self):
+        self._save_index()
+        logger.info("Faiss index saved")
+        
     @property
     def size(self) -> int:
         """Общее количество векторов в индексе"""

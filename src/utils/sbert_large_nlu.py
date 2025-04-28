@@ -3,6 +3,9 @@ import torch
 from pathlib import Path
 from transformers import AutoModel, AutoTokenizer
 from typing import List, Union
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SbertLargeNLU:
     def __init__(
@@ -22,6 +25,7 @@ class SbertLargeNLU:
             enable_rocm (bool): Флаг для использования ROCm
         """
         self.device = self._get_device(enable_rocm)
+        logger.info(f"Используемое устройство: {self.device}")
         self.model_name = model_name
         self.max_length = max_length
         self.root_dir = self._get_root_dir()
@@ -75,6 +79,7 @@ class SbertLargeNLU:
         """
         path = Path(model_dir) if model_dir else self.root_dir / "models/sbert"
         path.mkdir(parents=True, exist_ok=True)
+        logger.debug(f"Используемая директория для модели: {path}")
         return path
 
     def _load_model(self):
@@ -100,6 +105,8 @@ class SbertLargeNLU:
             
             model = model.to(self.device)
             print(f"Model loaded on device: {model.device}")
+            logger.debug(f"Модель загружена успешно.")
+            logger.debug(f"Модель загружена на устройство {model.device}.")
             return tokenizer, model.to(self.device)
         except Exception as e:
             raise RuntimeError(f"Failed to load model: {str(e)}")

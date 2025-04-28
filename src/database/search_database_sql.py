@@ -4,14 +4,16 @@ from pathlib import Path
 from typing import Dict, List, Optional
 from sqlalchemy import create_engine, exc, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
+import logging
 
+logger = logging.getLogger(__name__)
 # Импорт базового класса и моделей
 from src.database.models import Base, Document, Token 
 class SearchDatabase:
     def __init__(self, db_path: str = None):
         self._init_db_path(db_path)
         self.engine = create_engine(f'sqlite:///{self.db_path}', echo=False)
-        print(f"DB path: {self.db_path}")  # Отладка
+        logger.debug(f"База данных успешно создана: {self.db_path}")
         self.Session = scoped_session(sessionmaker(bind=self.engine))
         self._create_tables()
 
@@ -29,9 +31,10 @@ class SearchDatabase:
     def _create_tables(self):
         try:
             Base.metadata.create_all(self.engine)
-            print(f"Созданные таблицы: {self.engine.table_names()}")
+            logger.debug(f"Таблицы успешно созданы: {self.engine.table_names()}")
         except Exception as e:
-            print(f"Ошибка: {str(e)}")
+            logger.error(f"Ошибка создания таблиц: {str(e)}")
+            raise RuntimeError(f"Ошибка создания таблиц: {str(e)}")
 
     def add_document(self, doc_data: Dict) -> int:
         """
