@@ -165,25 +165,3 @@ class DataLoader:
             f"Обработка завершена. Успешно: {results['success']}, "
             f"Ошибки: {results['errors']}, Дубликаты: {results['duplicates']}"
         )
-
-    def search(self, query: str, top_k: int = 5) -> List[Dict]:
-        """Метод поиска"""
-        query_analysis = self.natasha.analyze_query(query)
-        query_embedding = self.sbert.create_embeddings(query_analysis['cleaned_text'])
-
-        faiss_results = self.faiss_db.search(query_embedding, top_k)
-
-        results = []
-        for res in faiss_results:
-            doc_data = self.sql_db.get_document(res['doc_id'])
-            start_orig = doc_data['mapping'][res['start_clean']]
-            end_orig = doc_data['mapping'][res['end_clean']]
-
-            results.append({
-                'doc_id': res['doc_id'],
-                'score': res['score'],
-                'text': doc_data['original_text'][start_orig:end_orig],
-                'position': (start_orig, end_orig)
-            })
-
-        return sorted(results, key=lambda x: x['score'], reverse=True)
